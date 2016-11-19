@@ -1,0 +1,26 @@
+service: aws-nodejs
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+  region: us-west-2
+  
+plugins:
+  - serverless-offline
+
+
+functions:
+  getComment:
+    handler: handler.getComment
+    events:
+      - http: 
+          path: "comments/{id}"
+          method: "GET"
+  commentParser:
+    handler: handler.commentParser
+    events:
+      - s3:
+          bucket: bandlabinbox
+          event: s3:ObjectCreated:*
+
